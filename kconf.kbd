@@ -1,0 +1,46 @@
+(defcfg
+  input  (device-file "/dev/annepro2")
+  output (uinput-sink "My KMonad output")
+
+allow-cmd true 
+fallthrough true)
+
+(defsrc
+  esc    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps   a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft   z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet cmp  rctl
+)
+
+(defalias
+  bb (tap-next spc rsft)
+  bcaps (tap-next bspc lctl)
+  bcolon (around lsft  ;)
+  tild (around lsft grv)
+  bart (layer-next art)
+  )
+ 
+(deflayer base
+  esc    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab	   q    w    f    p    b    j    j    l    u    y  @bcolon @bart        \
+  @bcaps     a    r    s    t    g   [   m    n    e    i    o    ret
+  lsft       z    x    c    d    v    /    k    h    ,   .   rsft
+  grv     lmet lalt           spc            ralt rmet _    _
+)
+
+(defalias
+  bbra (around lsft [)
+  br (around lsft ')
+  br1 (around lsft 9)
+  br2 (around lsft 8)
+  )
+
+(deflayer art
+  esc      1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab	 @bbra  [   @br1    p    b    j    j    l    u    y    [    ]    \
+  @bcaps     ' @br  @br2    t    g    m    m    n    e    i    o    ret
+  lsft       z    x    c    d    v    /    k    h    ,   .   rsft
+  lctl     lmet lalt           @bb            ralt rmet _    _
+)
+
